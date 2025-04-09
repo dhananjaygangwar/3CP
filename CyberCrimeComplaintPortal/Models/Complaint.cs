@@ -22,7 +22,7 @@ namespace CyberCrimeComplaintPortal.Models
 
         public string status { get; set; } = "Pending"; //default
 
-        public DateTime DateSubmitted { get; set; }
+        public DateTime DateSubmitted { get; set; } = DateTime.Now;
 
     }
 }
