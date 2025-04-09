@@ -27,12 +27,18 @@
     <tbody>
         @foreach (var complaint in Model)
         {
+            
+
             <tr>
                 <td>@complaint.FullName</td>
                 <td>@complaint.Email</td>
                 <td>@complaint.PhoneNumber</td>
                 <td>@complaint.status</td>
                 <td>@complaint.DateSubmitted.ToString("g")</td>
+            
+                <td>
+                    <a asp-action="Edit" asp-route-id="@complaint.Id" class="btn btn-sm btn-primary">Edit</a>
+                </td>
             </tr>
         }
     </tbody>

@@ -20,6 +20,7 @@ namespace CyberCrimeComplaintPortal.Models
         [Required]
         public string IncidentDetails { get; set; }
 
+        [Required(ErrorMessage ="Status is Requqired")]
         public string status { get; set; } = "Pending"; //default
 
         public DateTime DateSubmitted { get; set; } = DateTime.Now;
