@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using CyberCrimeComplaintPortal.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace CyberCrimeComplaintPortal
 {
@@ -13,6 +14,8 @@ namespace CyberCrimeComplaintPortal
             // Add services to the container.
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             builder.Services.AddControllersWithViews();
 
@@ -36,6 +39,9 @@ namespace CyberCrimeComplaintPortal
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.Run();
         }
