@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -22,16 +26,28 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Complaint" asp-action="Index">Manage Complaints</a>
+                                </li>
+                            }
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Complaint" asp-action="index">Submit Complaint</a>
+                            <a class="nav-link" asp-controller="Complaint" asp-action="index">Manage Complaints (ADMIN)</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Complaint" asp-action="Create">File Complaint</a>
                         </li>
 
+                    </ul>
+                    <ul class="navbar-nav">
+                        <partial name="_LoginPartial" />
                     </ul>
                 </div>
             </div>

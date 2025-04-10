@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CyberCrimeComplaintPortal.Data;
 using CyberCrimeComplaintPortal.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CyberCrimeComplaintPortal.Controllers
 {
@@ -12,6 +13,7 @@ namespace CyberCrimeComplaintPortal.Controllers
         {
             _db = db;
         }
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             var complaints = _db.Complaints.ToList();
@@ -42,6 +44,7 @@ namespace CyberCrimeComplaintPortal.Controllers
 
         // Edit section for admin panel
         // GET : Edit
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(int? id) 
         {
             if(id == null || id == 0) 
@@ -61,6 +64,7 @@ namespace CyberCrimeComplaintPortal.Controllers
 
         //POST : Edit
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Complaint obj) 
         {
