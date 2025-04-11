@@ -45,9 +45,9 @@ namespace CyberCrimeComplaintPortal.Controllers
         // Edit section for admin panel
         // GET : Edit
         [Authorize(Roles = "Admin")]
-        public IActionResult Edit(int? id) 
+        public IActionResult Edit(int? id)
         {
-            if(id == null || id == 0) 
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
@@ -66,21 +66,21 @@ namespace CyberCrimeComplaintPortal.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Complaint obj) 
+        public IActionResult Edit(Complaint obj)
         {
-            if (ModelState.IsValid) 
+            if (ModelState.IsValid)
             {
                 _db.Complaints.Update(obj);
                 _db.SaveChanges();
                 TempData["success"] = "Complaint status updated Successfully!";
-                return RedirectToAction(nameof(Index)); 
+                return RedirectToAction(nameof(Index));
             }
             return View(obj);
         }
 
         // GET : DELETE
         [Authorize(Roles = "Admin")]
-        public IActionResult Delete(int? id) 
+        public IActionResult Delete(int? id)
         {
             if (id == null || id == 0)
             {
@@ -93,8 +93,26 @@ namespace CyberCrimeComplaintPortal.Controllers
             {
                 return NotFound();
             }
-            return View(complaintFromDb)
+            return View(complaintFromDb);
 
+        }
+
+        //POST : DELETE
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            var obj = _db.Complaints.Find(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            _db.Complaints.Remove(obj);
+            _db.SaveChanges();
+            TempData["success"] = "Complaint Deleted succesfully!";
+            return RedirectToAction(nameof(Index));
+                        
         }
 
 
