@@ -78,7 +78,24 @@ namespace CyberCrimeComplaintPortal.Controllers
             return View(obj);
         }
 
+        // GET : DELETE
+        [Authorize(Roles = "Admin")]
+        public IActionResult Delete(int? id) 
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
 
+            var complaintFromDb = _db.Complaints.Find(id);
+
+            if (complaintFromDb == null)
+            {
+                return NotFound();
+            }
+            return View(complaintFromDb)
+
+        }
 
 
     }

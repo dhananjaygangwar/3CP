@@ -22,12 +22,17 @@
             <th>Phone</th>
             <th>Status</th>
             <th>Date</th>
+        
+            @if (User.IsInRole("Admin"))
+            {
+                <th>Actions</th>
+            }
         </tr>
     </thead>
     <tbody>
         @foreach (var complaint in Model)
         {
-            
+
 
             <tr>
                 <td>@complaint.FullName</td>
@@ -35,10 +40,15 @@
                 <td>@complaint.PhoneNumber</td>
                 <td>@complaint.status</td>
                 <td>@complaint.DateSubmitted.ToString("g")</td>
-            
-                <td>
-                    <a asp-action="Edit" asp-route-id="@complaint.Id" class="btn btn-sm btn-primary">Edit</a>
-                </td>
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@complaint.Id" class="btn btn-sm btn-primary">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@complaint.Id" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                }            
+                
             </tr>
         }
     </tbody>
