@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using CyberCrimeComplaintPortal.Data;
 using Microsoft.AspNetCore.Identity;
 
@@ -6,42 +6,92 @@ namespace CyberCrimeComplaintPortal
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = false;
+            })
+            .AddRoles<IdentityRole>() //  Add roles
+            .AddEntityFrameworkStores<ApplicationDbContext>();
 
             builder.Services.AddControllersWithViews();
+            builder.Services.AddRazorPages(); //  Identity needs this
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            //SEED DATABSE METHOD FOR ADMIN
+            //used for creating a admin role in database
+
+            //  Creating Roles + Admin user if not exist
+            /*using (var scope = app.Services.CreateScope())
+            {
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+                string[] roles = { "Admin", "User" };
+
+                foreach (var role in roles)
+                {
+                    if (!await roleManager.RoleExistsAsync(role))
+                    {
+                        await roleManager.CreateAsync(new IdentityRole(role));
+                    }
+                }
+
+                string adminEmail = "adminmain@cyber.com";
+                string adminPassword = "Admin@123"; // MAke it strong
+
+                var adminUser = await userManager.FindByEmailAsync(adminEmail);
+
+                if (adminUser == null)
+                {
+                    var newAdmin = new IdentityUser
+                    {
+                        UserName = adminEmail,
+                        Email = adminEmail,
+                        EmailConfirmed = true
+                    };
+
+                    var result = await userManager.CreateAsync(newAdmin, adminPassword);
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(newAdmin, "Admin");
+                    }
+                }
+                else
+                {
+                    if (!await userManager.IsInRoleAsync(adminUser, "Admin"))
+                    {
+                        await userManager.AddToRoleAsync(adminUser, "Admin");
+                    }
+                }
+            }*/
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuthentication(); //  FIRST
+            app.UseAuthorization();  // SECOND
 
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+            app.MapRazorPages(); //  Identity pages
 
             app.Run();
         }
