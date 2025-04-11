@@ -34,7 +34,7 @@ namespace CyberCrimeComplaintPortal
             //SEED DATABSE METHOD FOR ADMIN
             //used for creating a admin role in database
 
-            //  Creating Roles + Admin user if not exist
+            
             /*using (var scope = app.Services.CreateScope())
             {
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
