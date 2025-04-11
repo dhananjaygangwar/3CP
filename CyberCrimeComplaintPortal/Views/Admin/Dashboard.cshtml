@@ -2,6 +2,42 @@
     ViewData["Title"] = "Admin Dashboard";
 }
 
-<h1 class="text-center mt-4">Welcome to the Admin Dashboard</h1>
+<h1 class="text-center mt-4">🛡️ Admin Dashboard</h1>
 
 <p class="text-center">You are logged in as an Admin.</p>
+
+
+<div class="row text-center">
+    <div class="col-md-3 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5>Total Complaints</h5>
+                <h3 class="text-primary">@ViewBag.TotalComplaints</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5>Pending Complaints</h5>
+                <h3 class="text-warning">@ViewBag.PendingComplaints</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5>Resolved Complaints</h5>
+                <h3 class="text-success">@ViewBag.ResolvedComplaints</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5>Total Users</h5>
+                <h3 class="text-info">@ViewBag.TotalUsers</h3>
+            </div>
+        </div>
+    </div>
+</div>
