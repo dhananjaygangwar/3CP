@@ -29,6 +29,7 @@ namespace CyberCrimeComplaintPortal.Controllers
 
         // POST: Create
         [HttpPost]
+        //[Authorize(Roles = "Admin")]//kill me ;-;, eff this line
         [ValidateAntiForgeryToken]
         public IActionResult Create(Complaint obj)
         {
@@ -37,10 +38,16 @@ namespace CyberCrimeComplaintPortal.Controllers
                 _db.Complaints.Add(obj);
                 _db.SaveChanges();
                 TempData["success"] = "Complaint Submitted Successfully!";
-                return RedirectToAction(nameof(Index)); // can change this later
+                return RedirectToAction("ThankYou");// can change this later
+
             }
             return View(obj);
         }
+        public IActionResult ThankYou()
+        {
+            return View();
+        }
+
 
         // Edit section for admin panel
         // GET : Edit
@@ -64,7 +71,7 @@ namespace CyberCrimeComplaintPortal.Controllers
 
         //POST : Edit
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")] 
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Complaint obj)
         {
